@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Stan konta</th>
+            <th scope="col">Największy zysk</th>
+            <th scope="col">Największa strata</th>
+            <th scope="col">Średnia strata</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ acc_balance.balance|floatformat:2 }} <br> Wynik: {{ profit }}</td>
+            <td>
+              {{ max_profit.symbol }} {{ max_profit.net_profit|floatformat:2 }} 
+              <br>
+              <p>Rozmiar pozycji</p>
+              {{ max_profit.pctPosSize|floatformat:2 }}%
+              <p>Zysk na pozycji</p>
+              {{ max_profit.pctNetProfitPos|floatformat:2 }}%
+              <p>Zysk na kapitale</p>
+              {{ max_profit.pctNetProfitBalance|floatformat:2 }}%
+
+            </td>
+            <td>
+              {{ max_loss.symbol }}{{ max_loss.net_profit|floatformat:2 }} 
+              <br>
+              <p>Rozmiar pozycji</p>
+              {{ max_loss.pctPosSize|floatformat:2 }}%
+              <p>Strata na pozycji</p>
+              {{ max_loss.pctNetProfitPos|floatformat:2 }}%
+              <p>Strata na kapitale</p>
+              {{ max_loss.pctNetProfitBalance|floatformat:2 }}%
+
+            </td>
+            <td>{{ avg_loss.avg_loss|floatformat:2 }}%</td>
+          </tr>
+        </tbody>
+      </table>
+
+      {% for stock_trade in stock_trades %}
+        <div class="card" style="max-width: 540px;">
+          <div class="card-header">
+            {{ stock_trade.ticker }}:{{ stock_trade.exchange }} {{ stock_trade.date }} 
+          </div>
+          <div>
+            <img src="..." class="img-fluid rounded-start" alt="Screen struktury/buypointa i sl">
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Buy point: {{ stock_trade.buy_point }} </li>
+            <li class="list-group-item">Stop loss: {{ stock_trade.stop_loss }}</li>
+            <li class="list-group-item">Distribution - odczyt metrki z TV </li>
+          </ul>
+          <div class="card-body">
+            <p class="card-text">Description {{ stock_trade.description }} jeśli istnieje. Jeśli dłuższe od to powinien być dostępny link.</p>
+            {% for tag in stock_trade.tags.all %}
+              <span>{{ tag.name }}</span>
+            {% endfor %}
+          </div>
+        </div>
+      {% endfor %}
+</body>
+</html>
