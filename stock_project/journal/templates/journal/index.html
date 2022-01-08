@@ -64,6 +64,7 @@
             {% for tag in stock_trade.tags.all %}
               <span>{{ tag.name }}</span>
             {% endfor %}
+            <a href="{% url 'update-trade' stock_trade.id %}">Modyfikuj</a>
           </div>
         </div>
       {% endfor %}

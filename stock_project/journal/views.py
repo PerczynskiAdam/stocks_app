@@ -1,9 +1,10 @@
 from django.http.response import Http404
-from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Avg
 
 from .models import Transactions, Balance, Positions, StockTrade
+from .forms import StockTradeForm
 
 # Create your views here.
 def index(request):
@@ -33,11 +34,40 @@ def index(request):
     return render(request, template, context)
 
 
-def detail(request, id):
+def create_trade(request):
+    template = 'journal/create_trade.html'
+    context = {}
+
+    form = StockTradeForm()
+
+    if request.method == 'POST':
+        form = StockTradeForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+
+            return redirect('index')
+
+    context['form']= form
+    return render(request, template, context)
 
 
-    transaction = get_object_or_404(Transactions, pk=id)
-    context = {
-        'transactions': transaction
-    }
-    return render(request, 'journal/detail.html', context)
+def update_trade(request, pk):
+    trade = StockTrade.objects.get(id=pk)
+
+    template = 'journal/create_trade.html'
+    context = {}
+
+    form = StockTradeForm(instance=trade)
+
+    if request.method == 'POST':
+        # zamiast dodawać znowu instancje to ją nadpisuje
+        form = StockTradeForm(request.POST, instance=trade)
+
+        if form.is_valid():
+            form.save()
+
+            return redirect('index')
+
+    context['form']= form
+    return render(request, template, context)
