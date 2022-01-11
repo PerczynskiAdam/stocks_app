@@ -1,11 +1,7 @@
-# This is an auto-generated Django model module.
-# You'll have to do the following manually to clean this up:
-#   * Rearrange models' order
-#   * Make sure each model has one field with primary_key=True
-#   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
-#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
-# Feel free to rename the models, but don't rename db_table values or field names.
+import uuid
+
 from django.db import models
+
 
 
 # class VMarketInfo(models.Model):
@@ -27,7 +23,7 @@ from django.db import models
 
 
 class Transactions(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     symbol = models.CharField(max_length=20)
     # position = models.IntegerField()
     # type = models.CharField(max_length=20)
@@ -50,7 +46,7 @@ class Transactions(models.Model):
 
 
 class Balance(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     date = models.DateField()
     balance = models.DecimalField(max_digits=14, decimal_places=2)
 
@@ -63,7 +59,7 @@ class Balance(models.Model):
 
 
 class Positions(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     balance = models.ForeignKey(Balance, on_delete=models.DO_NOTHING, null=True, blank=True)
     symbol = models.CharField(max_length=20)
     open_date = models.DateField()
@@ -94,18 +90,19 @@ class Positions(models.Model):
         return pct_net_profit
 
 class Tag(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=20, null=True, blank=True)
 
     def __str__(self) -> str:
         return self.name
 class StockTrade(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     transaction = models.ForeignKey(Transactions, on_delete=models.CASCADE, null=True, blank=True)
     tags = models.ManyToManyField(Tag)
     ticker = models.CharField(max_length=5)
     exchange = models.CharField(max_length=10)
-    date = models.DateField()
+    create_date = models.DateField(auto_now_add=True)
+    update_date = models.DateField(auto_now=True)
     buy_point = models.DecimalField(max_digits=14, decimal_places=2)
     stop_loss = models.DecimalField(max_digits=14, decimal_places=2)
     description = models.TextField(null=True, blank=True)
@@ -113,7 +110,7 @@ class StockTrade(models.Model):
 
     class Meta:
         db_table = 'journal_stocktrade'
-        ordering = ['date', 'ticker']
+        ordering = ['create_date', 'ticker']
 
     def stockTags(self):
         return self.tag_set.all()
