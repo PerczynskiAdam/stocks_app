@@ -178,7 +178,7 @@ scheduler = BackgroundScheduler(timezone='Europe/Warsaw', job_defaults=job_defau
 
 scheduler.add_job(
     volume_check,
-    'interval', 
+    'interval',
     args=[
         p_username, p_password, p_symbol_dict, p_interval,
         p_no_of_days_to_calc_avg_vol,
