@@ -1,3 +1,4 @@
+from email.policy import default
 import uuid
 
 from django.db import models
@@ -106,7 +107,7 @@ class StockTrade(models.Model):
     buy_point = models.DecimalField(max_digits=14, decimal_places=2)
     stop_loss = models.DecimalField(max_digits=14, decimal_places=2)
     description = models.TextField(null=True, blank=True)
-    # image = models.ImageField()
+    image = models.ImageField(null=True, blank=True, default='cycle.jpg')
 
     class Meta:
         db_table = 'journal_stocktrade'
@@ -116,4 +117,4 @@ class StockTrade(models.Model):
         return self.tag_set.all()
 
     def __str__(self) -> str:
-        return "Date: " + self.date.strftime("%m/%d/%Y") + " of a: " + self.ticker + ":" + self.exchange + str(self.tags.name)
+        return "Date: " + self.create_date.strftime("%m/%d/%Y") + " of a: " + self.ticker + ":" + self.exchange

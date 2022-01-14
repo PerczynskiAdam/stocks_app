@@ -1,6 +1,8 @@
 
 {% extends 'main.html' %}
 
+{% load static %}
+
 {% block content %}
 <table class="table">
     <thead>
@@ -40,10 +42,10 @@
   {% for stock_trade in stock_trades %}
     <div class="card" style="max-width: 540px;">
       <div class="card-header">
-        {{ stock_trade.ticker }}:{{ stock_trade.exchange }} {{ stock_trade.date }} 
+        {{ stock_trade.ticker }}:{{ stock_trade.exchange }} {{ stock_trade.create_date }} 
       </div>
       <div>
-        <img src="..." class="img-fluid rounded-start" alt="Screen struktury/buypointa i sl">
+        <img src="{{ stock_trade.image.url }}" class="img-fluid rounded-start" alt="Screen struktury/buypointa i sl">
       </div>
       <ul class="list-group list-group-flush">
         <li class="list-group-item">Buy point: {{ stock_trade.buy_point }} </li>
