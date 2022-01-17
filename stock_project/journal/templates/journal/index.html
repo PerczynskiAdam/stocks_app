@@ -1,65 +1,82 @@
 
 {% extends 'main.html' %}
 
-{% load static %}
-
 {% block content %}
-<table class="table">
-    <thead>
-      <tr>
-        <th scope="col">Stan konta</th>
-        <th scope="col">Największy zysk</th>
-        <th scope="col">Największa strata</th>
-        <th scope="col">Średnia strata</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>{{ acc_balance.balance|floatformat:2 }} <br> Wynik: {{ profit }}</td>
-        <td>
-          <p>{{ max_profit.symbol }}: {{ max_profit.net_profit|floatformat:2 }}</p>
-          <hr>
-          <p>Rozmiar pozycji: <br>{{ max_profit.pctPosSize|floatformat:2 }}%</p>
-          <hr>
-          <p>Zysk na pozycji: <br>{{ max_profit.pctNetProfitPos|floatformat:2 }}%</p>
-          <hr>
-          <p>Zysk na kapitale: <br>{{ max_profit.pctNetProfitBalance|floatformat:2 }}%</p>
-        </td>
-        <td>
-          <p>{{ max_loss.symbol }}: {{ max_loss.net_profit|floatformat:2 }}</p>
-          <hr>
-          <p>Rozmiar pozycji: <br>{{ max_loss.pctPosSize|floatformat:2 }}%</p>
-          <hr>
-          <p>Strata na pozycji: <br>{{ max_loss.pctNetProfitPos|floatformat:2 }}%</p>
-          <hr>
-          <p>Strata na kapitale: <br>{{ max_loss.pctNetProfitBalance|floatformat:2 }}%</p>
-        </td>
-        <td>{{ avg_loss.avg_loss|floatformat:2 }}%</td>
-      </tr>
-    </tbody>
-  </table>
-
-  {% for stock_trade in stock_trades %}
-    <div class="card" style="max-width: 540px;">
-      <div class="card-header">
-        {{ stock_trade.ticker }}:{{ stock_trade.exchange }} {{ stock_trade.create_date }} 
-      </div>
-      <div>
-        <img src="{{ stock_trade.image.url }}" class="img-fluid rounded-start" alt="Screen struktury/buypointa i sl">
-      </div>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item">Buy point: {{ stock_trade.buy_point }} </li>
-        <li class="list-group-item">Stop loss: {{ stock_trade.stop_loss }}</li>
-        <li class="list-group-item">Distribution - odczyt metrki z TV </li>
-      </ul>
-      <div class="card-body">
-        <p class="card-text">Description {{ stock_trade.description }} jeśli istnieje. Jeśli dłuższe od to powinien być dostępny link.</p>
-        {% for tag in stock_trade.tags.all %}
-          <span>{{ tag.name }}</span>
-        {% endfor %}
-        <a href="{% url 'update-trade' stock_trade.id %}">Modyfikuj</a>
-      </div>
+<div class="container">
+  <h1>Podsumowanie portfela</h1>
+  <div class="row">
+    <div class="col">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Stan konta</th>
+            <th scope="col">Największy zysk</th>
+            <th scope="col">Największa strata</th>
+            <th scope="col">Średnia strata</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ acc_balance.balance|floatformat:2 }} <br> Rezultat: {{ profit }}</td>
+            <td>
+              <p>{{ max_profit.symbol }}: {{ max_profit.net_profit|floatformat:2 }}</p>
+              <hr>
+              <p>Rozmiar pozycji: {{ max_profit.pctPosSize|floatformat:2 }}%</p>
+              <hr>
+              <p>Zysk na pozycji: {{ max_profit.pctNetProfitPos|floatformat:2 }}%</p>
+              <hr>
+              <p>Zysk na kapitale: {{ max_profit.pctNetProfitBalance|floatformat:2 }}%</p>
+            </td>
+            <td>
+              <p>{{ max_loss.symbol }}: {{ max_loss.net_profit|floatformat:2 }}</p>
+              <hr>
+              <p>Rozmiar pozycji: {{ max_loss.pctPosSize|floatformat:2 }}%</p>
+              <hr>
+              <p>Strata na pozycji: {{ max_loss.pctNetProfitPos|floatformat:2 }}%</p>
+              <hr>
+              <p>Strata na kapitale: {{ max_loss.pctNetProfitBalance|floatformat:2 }}%</p>
+            </td>
+            <td>{{ avg_loss.avg_loss|floatformat:2 }}%</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-  {% endfor %}
-    <a href="{% url 'create-trade' %}">Dodaj trade</a>
+  </div>
+</div>
+
+<div class="container">
+  <h2>Plan na sesję</h2>
+  <div class="row g-2">
+    {% for stock_trade in stock_trades %}
+      <div class="col-4 p-2">
+        <div class="card" style="max-width: 540px;">
+          <div class="card-header">
+            {{ stock_trade.ticker }}:{{ stock_trade.exchange }} {{ stock_trade.create_date }} 
+          </div>
+          <div>
+            <img src="{{ stock_trade.image.url }}" class="img-trade img-fluid rounded-start" alt="Screen struktury/buypointa i sl">
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Buy point: {{ stock_trade.buy_point }} </li>
+            <li class="list-group-item">Stop loss: {{ stock_trade.stop_loss }}</li>
+            <li class="list-group-item">Distribution - odczyt metrki z TV </li>
+          </ul>
+          <div class="card-body">
+            <p class="card-text">Description {{ stock_trade.description }} jeśli istnieje. Jeśli dłuższe od to powinien być dostępny link.</p>
+            {% for tag in stock_trade.tags.all %}
+              <span class="tag rounded-pill px-2 py-1">{{ tag.name }}</span>
+            {% endfor %}
+            <hr>
+            <br>
+            <a href="{% url 'update-trade' stock_trade.id %}">Modyfikuj</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+<div class="container">
+  <h3><a href="{% url 'create-trade' %}">Dodaj trade</a></h3>
+</div>
+
 {% endblock %}
