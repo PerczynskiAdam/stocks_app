@@ -97,17 +97,22 @@ class Tag(models.Model):
     def __str__(self) -> str:
         return self.name
 class StockTrade(models.Model):
+    EXCHANGES = [
+        ('NASDAQ', 'NASDAQ'),
+        ('GPW', 'GPW')
+    ]
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     transaction = models.ForeignKey(Transactions, on_delete=models.CASCADE, null=True, blank=True)
-    tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(Tag, verbose_name='Tagi')
     ticker = models.CharField(max_length=5)
-    exchange = models.CharField(max_length=10)
+    exchange = models.CharField(max_length=10, choices=EXCHANGES, default='NASDAQ')
     create_date = models.DateField(auto_now_add=True)
     update_date = models.DateField(auto_now=True)
     buy_point = models.DecimalField(max_digits=14, decimal_places=2)
     stop_loss = models.DecimalField(max_digits=14, decimal_places=2)
-    description = models.TextField(null=True, blank=True)
-    image = models.ImageField(null=True, blank=True, default='cycle.jpg')
+    description = models.TextField(null=True, blank=True, verbose_name='Opis')
+    image = models.ImageField(null=True, blank=True, default='cycle.jpg', verbose_name='Zdjęcie')
 
     class Meta:
         db_table = 'journal_stocktrade'

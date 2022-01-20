@@ -1,13 +1,65 @@
 {% extends 'main.html' %}
 
+{% load journal_extras %}
+
 {% block content %}
 <div class="container">
     <div class="row">
-        <form action="" method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="Zapisz">
-        </form>
+        <div class="col-8 offset-md-2">
+            <h1>Formularz dodania trade'a</h1>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="row my-3">
+                    <div class="col-6">
+                        <p>
+                            {{ form.ticker|label_with_classes:"form-label" }}
+                            {{ form.ticker }}
+                        </p>
+                    </div>
+                    <div class="col-6">
+                        <p>
+                            {{form.exchange|label_with_classes:"form-label"}}
+                            {{form.exchange}}
+                        </p>
+                    </div>
+                </div>
+                <div class="row my-3">
+                    <div class="col-6">
+                        <p>
+                            {{form.buy_point|label_with_classes:"form-label"}}
+                            {{form.buy_point}}
+                        </p>
+                    </div>
+                    <div class="col-6">
+                        <p>
+                            {{form.stop_loss|label_with_classes:"form-label"}}
+                            {{form.stop_loss}}
+                        </p>
+                    </div>
+                </div>
+                <div class="row my-3">
+                    <div class="col-12">
+                        <p>{{form.description|label_with_classes:"form-label"}} </p>
+                        <p>{{form.description}}</p>
+                    </div>
+                </div>
+                <div class="row my-3">
+                    <div class="col-6">
+                        <p>{{form.tags|label_with_classes:"form-label"}}</p>
+                        <p>{{form.tags}}</p>
+                    </div>
+                    <div class="col-6">
+                        <p>{{form.image|label_with_classes:"form-label"}}</p>
+                        <p>{{form.image}}</p>
+                    </div>
+                </div>
+                <div class="row my-3">
+                    <div class="col-12">
+                        <input type="submit" value="Zapisz">
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 {% endblock %}
