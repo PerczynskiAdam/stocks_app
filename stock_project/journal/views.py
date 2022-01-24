@@ -71,3 +71,12 @@ def update_trade(request, pk):
 
     context['form']= form
     return render(request, template, context)
+
+
+def display_trade(request, pk):
+    template = 'journal/trade.html'
+    context = {}
+
+    trade = StockTrade.objects.get(id=pk)
+    context['trade'] = trade
+    return render(request, template, context)

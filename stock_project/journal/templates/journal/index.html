@@ -50,17 +50,19 @@
     {% for stock_trade in stock_trades %}
       <div class="col-4 p-2">
         <div class="card" style="max-width: 540px;">
-          <div class="card-header">
-            {{ stock_trade.ticker }}:{{ stock_trade.exchange }} {{ stock_trade.create_date }} 
-          </div>
-          <div>
-            <img src="{{ stock_trade.image.url }}" class="img-trade img-fluid rounded-start" alt="Screen struktury/buypointa i sl">
-          </div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">Buy point: {{ stock_trade.buy_point }} </li>
-            <li class="list-group-item">Stop loss: {{ stock_trade.stop_loss }}</li>
-            <li class="list-group-item">Distribution - odczyt metrki z TV </li>
-          </ul>
+          <a href="{% url 'display-trade' stock_trade.id %}">
+            <div class="card-header">
+              {{ stock_trade.ticker }}:{{ stock_trade.exchange }} {{ stock_trade.create_date }} 
+            </div>
+            <div>
+              <img src="{{ stock_trade.image.url }}" class="img-trade img-fluid rounded-start" alt="Screen struktury/buypointa i sl">
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Buy point: {{ stock_trade.buy_point }} </li>
+              <li class="list-group-item">Stop loss: {{ stock_trade.stop_loss }}</li>
+              <li class="list-group-item">Distribution - odczyt metrki z TV </li>
+            </ul>
+          </a>
           <div class="card-body">
             <p class="card-text">{{ stock_trade.description }}</p>
             {% for tag in stock_trade.tags.all %}

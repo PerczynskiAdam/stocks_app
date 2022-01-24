@@ -73,22 +73,22 @@ class Positions(models.Model):
         db_table = 'journal_positions'
     
     def __str__(self) -> str:
-        return "Date: " + self.open_date.strftime("%m/%d/%Y") + " of a: " + self.symbol + f". Result :" + "{:.2f}".format(self.net_profit)
+        return "Date: " + self.open_date.strftime("%m/%d/%Y") + " of a: " + self.symbol + f". Result: " + "{:.2f}".format(self.net_profit)
 
     @property
     def pctNetProfitPos(self):
-        pct_net_profit = self.net_profit / self.close_price * 100
-        return pct_net_profit
+        pct_net_profit = self.net_profit / self.open_price * 100
+        return float(round(pct_net_profit, 2))
     
     @property
     def pctPosSize(self):
         pct_pos_size = self.open_price / self.balance.balance * 100
-        return pct_pos_size
+        return float(round(pct_pos_size, 2))
     
     @property
     def pctNetProfitBalance(self):
         pct_net_profit = self.net_profit / self.balance.balance * 100
-        return pct_net_profit
+        return float(round(pct_net_profit, 2))
 
 class Tag(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -107,10 +107,15 @@ class StockTrade(models.Model):
     tags = models.ManyToManyField(Tag, verbose_name='Tagi')
     ticker = models.CharField(max_length=5)
     exchange = models.CharField(max_length=10, choices=EXCHANGES, default='NASDAQ')
+    # vol_20day
+    # vol_50day
     create_date = models.DateField(auto_now_add=True)
     update_date = models.DateField(auto_now=True)
     buy_point = models.DecimalField(max_digits=14, decimal_places=2)
+    # open_price =
     stop_loss = models.DecimalField(max_digits=14, decimal_places=2)
+    # close_price = 
+    # trigerred
     description = models.TextField(null=True, blank=True, verbose_name='Opis')
     image = models.ImageField(null=True, blank=True, default='cycle.jpg', verbose_name='Zdjęcie')
 

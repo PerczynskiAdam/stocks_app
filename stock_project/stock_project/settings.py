@@ -87,7 +87,11 @@ DATABASES = {
         'PORT': '5432',
         'OPTIONS': {
             # sciezka do poszukiwania właściwego schema dla inspectdb
-            'options': '-c search_path=rap'
+            # testy usuwaja db za każdym razem an podstawie schema: public
+            'options': '-c search_path=rap,public'
+        },
+        'TEST': {
+            'NAME': 'test_stock_market'
         }
     }
 }
