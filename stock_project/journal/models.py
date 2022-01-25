@@ -123,8 +123,8 @@ class StockTrade(models.Model):
         db_table = 'journal_stocktrade'
         ordering = ['create_date', 'ticker']
 
-    def stockTags(self):
-        return self.tag_set.all()
+    # def stockTags(self):
+    #     return self.tag_set.all()
 
     def __str__(self) -> str:
         return "Date: " + self.create_date.strftime("%m/%d/%Y") + " of a: " + self.ticker + ":" + self.exchange

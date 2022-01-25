@@ -1,7 +1,7 @@
 from django.test import TestCase
 from datetime import date, time
 
-from .models import Positions, Balance
+from ..models import Positions, Balance, StockTrade, Tag
 
 # Create your tests here.
 class PositionsTestCase(TestCase):
