@@ -41,6 +41,7 @@ class Transactions(models.Model):
 
     class Meta:
         db_table = 'journal_transactions'
+        ordering = ['symbol', 'open_time']
 
     def __str__(self) -> str:
         return "Date: " + self.open_time.strftime("%m/%d/%Y") + " of a: " + self.symbol + f". Result :" + str(self.pct_net_profit)
@@ -53,6 +54,7 @@ class Balance(models.Model):
 
     class Meta:
         db_table = 'journal_balance'
+        ordering = ['date']
 
     def __str__(self) -> str:
         # return "Balance: " + "{:.2f}".format(self.balance) + " on: " + self.date.strftime("%m/%d/%Y")
@@ -71,6 +73,7 @@ class Positions(models.Model):
 
     class Meta:
         db_table = 'journal_positions'
+        ordering = ['open_date', 'open_time']
     
     def __str__(self) -> str:
         return "Date: " + self.open_date.strftime("%m/%d/%Y") + " of a: " + self.symbol + f". Result: " + "{:.2f}".format(self.net_profit)

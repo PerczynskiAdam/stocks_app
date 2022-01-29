@@ -14,9 +14,9 @@ class UrlsTestCase(TestCase):
         self.assertEquals(resolve(url).func, create_trade)
     
     def test_update_trade_url_resolves(self):
-        url = reverse('update-trade', args=['some-uuid'])
+        url = reverse('update-trade', kwargs={'pk': 'some-uuid'})
         self.assertEquals(resolve(url).func, update_trade)
 
     def test_display_trade_url_resolves(self):
-        url = reverse('display-trade', args=['some-uuid'])
+        url = reverse('display-trade', kwargs={'pk': 'some-uuid'})
         self.assertEquals(resolve(url).func, display_trade)
