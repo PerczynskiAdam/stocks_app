@@ -1,6 +1,5 @@
 from django.http.response import Http404
-from django.shortcuts import get_object_or_404, redirect, render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import redirect, render
 from django.db.models import Avg
 
 from .models import Transactions, Balance, Positions, StockTrade
